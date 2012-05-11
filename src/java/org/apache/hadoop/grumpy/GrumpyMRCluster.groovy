@@ -5,10 +5,15 @@ import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.mapred.MiniMRCluster
 
 @InheritConstructors
-class GrumpyMRCluster extends MiniMRCluster {
+class GrumpyMRCluster extends MiniMRCluster implements Closeable {
 
     public static final String HADOOP_LOG_DIR = "hadoop.log.dir"
 
+    @Override
+    void close() {
+        shutdown()
+    }
+    
     static GrumpyMRCluster createInstance(int numTaskTrackers,
                                           String fsURI,
                                           int numDir,
