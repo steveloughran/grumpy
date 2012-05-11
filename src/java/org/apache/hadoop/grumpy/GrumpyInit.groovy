@@ -1,9 +1,8 @@
 package java.org.apache.hadoop.grumpy
 
-import org.apache.hadoop.mapred.JobConf
+import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapreduce.Job
-import groovy.util.logging.Commons
 
 /**
  * This contains the init logic that sets up various Hadoop classes to be
