@@ -1,4 +1,4 @@
-package java.org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy
 
 import org.apache.hadoop.mapreduce.Job
 

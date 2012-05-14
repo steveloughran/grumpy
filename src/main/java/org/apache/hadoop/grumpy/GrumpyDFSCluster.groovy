@@ -1,4 +1,4 @@
-package java.org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy
 
 import groovy.transform.InheritConstructors
 import org.apache.hadoop.conf.Configuration

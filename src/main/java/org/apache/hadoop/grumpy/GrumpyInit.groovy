@@ -1,4 +1,4 @@
-package java.org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy
 
 import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
@@ -6,7 +6,8 @@ import org.apache.hadoop.mapreduce.Job
 
 /**
  * This contains the init logic that sets up various Hadoop classes to be
- * a bit more groovy
+ * a bit more groovy. You must instantiate a GrumpyInit class to force injection
+ * into the system.
  */
 @Commons
 class GrumpyInit {

@@ -1,4 +1,4 @@
-package java.org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy
 
 /**
  * A class that provides array access to system properties

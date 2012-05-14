@@ -1,4 +1,4 @@
-package java.org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy
 
 import groovy.transform.InheritConstructors
 import org.apache.hadoop.mapred.JobConf
@@ -20,7 +20,7 @@ class GrumpyMRCluster extends MiniMRCluster implements Closeable {
                                           String[] hosts,
                                           JobConf conf) {
         Sysprops[HADOOP_LOG_DIR] =
-            conf.get(HADOOP_LOG_DIR, Sysprops["java.io.tmpdir"]);
+            conf[HADOOP_LOG_DIR]?:Sysprops["java.io.tmpdir"];
         new GrumpyMRCluster(numTaskTrackers, fsURI, numDir, hosts, conf)
     }
 
