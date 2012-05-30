@@ -5,12 +5,12 @@ package org.apache.hadoop.grumpy
  */
 class Sysprops {
 
-    static def getAt(def k) {
-        System.getProperty(k)
-    }
+  static def getAt(def k) {
+    System.getProperty(k)
+  }
 
-    static def setAt(def k, def v) {
-        System.setProperty(k, v)
-    }
+  static def setAt(def k, def v) {
+    System.setProperty(k, v)
+  }
 
 }

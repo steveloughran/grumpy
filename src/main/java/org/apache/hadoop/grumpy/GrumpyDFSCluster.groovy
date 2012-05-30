@@ -7,21 +7,21 @@ import org.apache.hadoop.hdfs.MiniDFSCluster
 @InheritConstructors
 class GrumpyDFSCluster extends MiniDFSCluster implements Closeable {
 
-    public static final String TEST_BUILD_DATA = "test.build.data"
+  public static final String TEST_BUILD_DATA = "test.build.data"
 
-    @Override
-    void close() {
-        shutdown()
-    }
+  @Override
+  void close() {
+    shutdown()
+  }
 /**
-     * fix the problem with MiniDFS clusters being system property driven
-     * @param conf config file
-     */
-    GrumpyDFSCluster newInstance(Configuration conf,
-                                 int numDataNodes) {
-        Sysprops[TEST_BUILD_DATA] = conf[TEST_BUILD_DATA]
-        new GrumpyDFSCluster(conf, numDataNodes)
-    }
+ * fix the problem with MiniDFS clusters being system property driven
+ * @param conf config file
+ */
+  GrumpyDFSCluster newInstance(Configuration conf,
+                               int numDataNodes) {
+    Sysprops[TEST_BUILD_DATA] = conf[TEST_BUILD_DATA]
+    new GrumpyDFSCluster(conf, numDataNodes)
+  }
 
 
 }

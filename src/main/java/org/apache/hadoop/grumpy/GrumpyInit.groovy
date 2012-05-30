@@ -12,31 +12,48 @@ import org.apache.hadoop.mapreduce.Job
 @Commons
 class GrumpyInit {
 
-    static {
-        /** array assignment for job confs */
-        Configuration.metaClass.setAt = { k, v ->
-            set(k.toString(), v.toString())
-        }
-
-        Configuration.metaClass.getAt = { k ->
-            get(k)
-        }
-
-        /**
-         * Job array assignments propagate to the inner config
-         */
-        Job.metaClass.setAt = { k, v ->
-            configuration[k] = v
-        }
-
-        Job.metaClass.getAt = { k ->
-            configuration(k)
-        }
-
-        log.debug("Grumpy is now initialized")
-
+  static {
+    /** array assignment for job confs */
+    Configuration.metaClass.setAt = { k, v ->
+      set(k.toString(), v.toString())
     }
 
+    Configuration.metaClass.getAt = { k ->
+      get(k)
+    }
+
+    /**
+     * Add an entire map
+     */
+    Configuration.metaClass.add = {map ->
+      map.each {mapEntry ->
+        set((mapEntry.key).toString(), (mapEntry.value).toString() )
+      }
+    }
+
+    /**
+     * Job array assignments propagate to the inner config
+     */
+    Job.metaClass.setAt = { k, v ->
+      configuration[k] = v
+    }
+
+    Job.metaClass.getAt = { k ->
+      configuration[k]
+    }
+
+    /**
+     * Add an entire map
+     */
+    Job.metaClass.add = {map -> configuration.add(map) }
+
+    log.debug("Grumpy is now initialized")
+
+  }
+
+  GrumpyInit() {
+    log.debug("welcome to grumpy");
+  }
 }
 
 
