@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.Job
  * into the system.
  */
 @Commons
-class GrumpyInit {
+class Grumpy {
 
   static {
     /** array assignment for job confs */
@@ -47,11 +47,10 @@ class GrumpyInit {
      */
     Job.metaClass.add = {map -> configuration.add(map) }
 
-    log.debug("Grumpy is now initialized")
 
   }
 
-  GrumpyInit() {
+  Grumpy() {
     log.debug("welcome to grumpy");
   }
 }

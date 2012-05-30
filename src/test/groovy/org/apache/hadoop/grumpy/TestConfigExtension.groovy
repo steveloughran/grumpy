@@ -25,20 +25,20 @@ class TestConfigExtension extends GroovyTestCase {
 
   public void testInit() {
 
-    new GrumpyInit()
+    new Grumpy()
 
   }
 
 
   public void testConfigSet() {
-    new GrumpyInit()
+    new Grumpy()
     Configuration conf = new Configuration()
     conf['t'] = 'tv'
     assert 'tv' == conf.get('t')
   }
 
   public void testConfigGet() {
-    new GrumpyInit()
+    new Grumpy()
     Configuration conf = new Configuration()
     conf.set('t', 'tv')
     assert 'tv' == conf['t']
@@ -46,7 +46,7 @@ class TestConfigExtension extends GroovyTestCase {
 
 
   public void testHelperMap() throws Throwable {
-    new GrumpyInit()
+    new Grumpy()
     Configuration conf = new Configuration();
     conf.add(
         'testget': true,
@@ -59,7 +59,7 @@ class TestConfigExtension extends GroovyTestCase {
   }
 
   public void testAll() throws Throwable {
-    new GrumpyInit()
+    new Grumpy()
     Configuration conf = new Configuration();
     conf.add(
         'testget': true,
