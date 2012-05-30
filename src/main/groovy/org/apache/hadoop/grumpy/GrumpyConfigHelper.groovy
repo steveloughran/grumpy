@@ -27,7 +27,7 @@ class GrumpyConfigHelper {
    * @return nothing
    */
   static def addConfigMap(Configuration self,Map map) {
-    map.every { mapEntry ->
+    map.each { mapEntry ->
       setConfigEntry(self, mapEntry.key, mapEntry.value)  
     }
   }

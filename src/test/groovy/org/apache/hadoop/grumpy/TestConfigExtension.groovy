@@ -33,8 +33,11 @@ class TestConfigExtension extends GroovyTestCase {
   public void testConfigSet() {
     new Grumpy()
     Configuration conf = new Configuration()
-    conf['t'] = 'tv'
-    assert 'tv' == conf.get('t')
+    conf['t'] = 't1'
+    assert 't1' == conf.get('t')
+    conf['t'] = 't2'
+    assert 't2' == conf.get('t')
+
   }
 
   public void testConfigGet() {
@@ -42,6 +45,9 @@ class TestConfigExtension extends GroovyTestCase {
     Configuration conf = new Configuration()
     conf.set('t', 'tv')
     assert 'tv' == conf['t']
+    conf.set('t', 't2')
+    assert 't2' == conf.get('t')
+
   }
 
 
@@ -66,7 +72,7 @@ class TestConfigExtension extends GroovyTestCase {
         'testset': 4,
         'teststr': 'str'
     )
-    conf['teststr', 'str2']
+    conf['teststr']= 'str2'
     assert conf['testget']
     assert '4' == conf['testset']
     assert 'str2' == conf['teststr']
