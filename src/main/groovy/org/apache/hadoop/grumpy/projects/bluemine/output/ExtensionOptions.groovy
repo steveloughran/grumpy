@@ -18,7 +18,7 @@ package org.apache.hadoop.grumpy.projects.bluemine.output
  * limitations under the License.
  */
 interface ExtensionOptions {
-    String KEY_EXTENSION = "grumpy.output.extension";
-    String DEFAULT_EXTENSION = ".txt";
-    String KEY_SEPARATOR = "mapred.textoutputformat.separator";
+  String KEY_EXTENSION = "grumpy.output.extension";
+  String DEFAULT_EXTENSION = ".txt";
+  String KEY_SEPARATOR = "mapred.textoutputformat.separator";
 }

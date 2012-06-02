@@ -1,16 +1,15 @@
 package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.io.Text
-import org.apache.hadoop.mapred.JobConf
-
 import groovy.util.logging.Commons
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.grumpy.GrumpyJob
+import org.apache.hadoop.grumpy.Keys
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtensionOptions
-import org.apache.hadoop.grumpy.GrumpyJob
-import org.apache.hadoop.grumpy.Keys
 import org.apache.hadoop.grumpy.tools.GrumpyTools
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.mapred.JobConf
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -32,92 +31,91 @@ import org.apache.hadoop.grumpy.tools.GrumpyTools
 @Commons
 class BluemineJob extends GrumpyJob {
 
-    BluemineJob(String jobName) {
-        super(jobName)
-    }
+  BluemineJob(String jobName) {
+    super(jobName)
+  }
 
-    BluemineJob(Configuration conf) {
-        super(conf)
-    }
+  BluemineJob(Configuration conf) {
+    super(conf)
+  }
 
-    BluemineJob(Configuration conf, String jobName) {
-        super(conf, jobName)
-    }
+  BluemineJob(Configuration conf, String jobName) {
+    super(conf, jobName)
+  }
 
-    @Override
-    String toString() {
-        StringBuilder builder = new StringBuilder(200)
-        builder.append(getClass().name).append(": ").append(jobName).append("\n")
-        appendConf(builder, ["mapred.input.dir", "mapred.output.dir", "mapred.job.tracker"])
-        appendConf(builder, Keys.JOB_KEY_JARS)
-        appendConf(builder, Keys.MAP_KEY_CLASS)
-        appendConf(builder, org.apache.hadoop.fs.FileSystem.FS_DEFAULT_NAME_KEY)
-        appendConf(builder, [])
-        appendConf(builder, OUTPUT_FORMAT_CLASS_ATTR)
-        appendPattern(builder, "bluemine.")
-        builder.toString()
-    }
+  @Override
+  String toString() {
+    StringBuilder builder = new StringBuilder(200)
+    builder.append(getClass().name).append(": ").append(jobName).append("\n")
+    appendConf(builder, ["mapred.input.dir", "mapred.output.dir", "mapred.job.tracker"])
+    appendConf(builder, Keys.JOB_KEY_JARS)
+    appendConf(builder, Keys.MAP_KEY_CLASS)
+    appendConf(builder, org.apache.hadoop.fs.FileSystem.FS_DEFAULT_NAME_KEY)
+    appendConf(builder, [])
+    appendConf(builder, OUTPUT_FORMAT_CLASS_ATTR)
+    appendPattern(builder, "bluemine.")
+    builder.toString()
+  }
 
-    protected void appendConf(StringBuilder builder, List<String> keys) {
-        keys.each() { key -> 
-                appendKV(builder, key, get(key)) 
-        }
+  protected void appendConf(StringBuilder builder, List<String> keys) {
+    keys.each() { key ->
+      appendKV(builder, key, get(key))
     }
-    
-    protected void appendConf(StringBuilder builder, String key) {
-        appendKV(builder, key, get(key))
+  }
+
+  protected void appendConf(StringBuilder builder, String key) {
+    appendKV(builder, key, get(key))
+  }
+
+  protected void appendKV(StringBuilder builder, String key, String value) {
+    builder.append(key).append("=\"").append(value).append('"\n')
+  }
+
+  protected void appendPattern(StringBuilder builder, String pattern) {
+    conf.each() { entry ->
+      if (entry.key.startsWith(pattern)) {
+        appendKV(builder, entry.key, entry.value)
+      }
     }
+  }
 
-    protected void appendKV(StringBuilder builder, String key, String value) {
-        builder.append(key).append("=\"").append(value).append('"\n')
-    }
+  void makeMapEmitEvents() {
+    mapOutputKeyClass = Text
+    mapOutputValueClass = BlueEvent
+    outputCSVFiles()
+  }
 
-    protected void appendPattern(StringBuilder builder, String pattern) {
-        conf.each() { entry -> 
-            if(entry.key.startsWith(pattern)) {
-                appendKV(builder, entry.key, entry.value)
-            }
-        }
-    }
+  void outputCSVFiles() {
+    set(ExtensionOptions.KEY_EXTENSION, ".csv")
+    set(ExtensionOptions.KEY_SEPARATOR, ",")
+    set(OUTPUT_FORMAT_CLASS_ATTR, ExtTextOutputFormat.name)
+  }
 
-    void makeMapEmitEvents() {
-        mapOutputKeyClass = Text
-        mapOutputValueClass = BlueEvent
-        outputCSVFiles()
-    }
-    
-    void outputCSVFiles() {
-        set(ExtensionOptions.KEY_EXTENSION, ".csv")
-        set(ExtensionOptions.KEY_SEPARATOR, ",")
-        set(OUTPUT_FORMAT_CLASS_ATTR, ExtTextOutputFormat.name)
-    }
+  /**
+   * Create a basic job with the given M & R jobs. 
+   * The Groovy JAR is added as another needed JAR; the mapClass is set as the main jar of the job
+   * @param name job name
+   * @param conf configuration
+   * @param mapClass mapper
+   * @param reduceClass reducer
+   * @return
+   */
+  static BluemineJob createBasicJob(String name,
+                                    JobConf conf,
+                                    Class mapClass,
+                                    Class reduceClass) {
 
+    BluemineJob job = new BluemineJob(conf, name)
 
-    /**
-     * Create a basic job with the given M & R jobs. 
-     * The Groovy JAR is added as another needed JAR; the mapClass is set as the main jar of the job
-     * @param name job name
-     * @param conf configuration
-     * @param mapClass mapper
-     * @param reduceClass reducer
-     * @return
-     */
-    static BluemineJob createBasicJob(String name,
-                                      JobConf conf,
-                                      Class mapClass,
-                                      Class reduceClass) {
-
-        BluemineJob job = new BluemineJob(conf, name)
-
-        job.addGroovyJar();
-        log.info(" map class is $mapClass reduce class is $reduceClass")
-        String jar = GrumpyTools.findContainingJar(mapClass)
-        log.info(" map class is at $jar")
-        job.jarByClass = mapClass
-        job.mapperClass = mapClass
-        job.reducerClass = reduceClass
-        //set up csv output 
-        job.outputCSVFiles();
-        job
-    }
+    job.addGroovyJar();
+    log.info(" map class is $mapClass reduce class is $reduceClass")
+    String jar = GrumpyTools.findContainingJar(mapClass)
+    log.info(" map class is at $jar")
+    job.jarByClass = mapClass
+    job.mapperClass = mapClass
+    job.reducerClass = reduceClass
+    //set up csv output 
+    job.outputCSVFiles();
+    job
+  }
 }

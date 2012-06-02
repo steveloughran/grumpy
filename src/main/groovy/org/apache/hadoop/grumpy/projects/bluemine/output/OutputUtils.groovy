@@ -21,15 +21,15 @@ import org.apache.hadoop.conf.Configuration
  */
 class OutputUtils {
 
-    static String getExtension(Configuration conf) {
-        String ext = conf.get(ExtensionOptions.KEY_EXTENSION, ExtensionOptions.DEFAULT_EXTENSION)
-        if(!ext) {
-            return ExtensionOptions.DEFAULT_EXTENSION
-        }
-        if (!ext.startsWith(".")) {
-            ext = "." + ext;
-        }
-        ext
+  static String getExtension(Configuration conf) {
+    String ext = conf.get(ExtensionOptions.KEY_EXTENSION, ExtensionOptions.DEFAULT_EXTENSION)
+    if (!ext) {
+      return ExtensionOptions.DEFAULT_EXTENSION
     }
-    
+    if (!ext.startsWith(".")) {
+      ext = "." + ext;
+    }
+    ext
+  }
+
 }

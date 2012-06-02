@@ -31,24 +31,24 @@ import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat
 @Commons
 class ExtMultipleTextOutputFormat<K, V> extends MultipleTextOutputFormat<K, V> implements ExtensionOptions {
 
-    protected String extension = DEFAULT_EXTENSION;
+  protected String extension = DEFAULT_EXTENSION;
 
-    @Override
-    protected String generateLeafFileName(String name) {
-        return super.generateLeafFileName(name) + extension;
-    }
+  @Override
+  protected String generateLeafFileName(String name) {
+    return super.generateLeafFileName(name) + extension;
+  }
 
-    @Override
-    protected String generateFileNameForKeyValue(K key, V value, String name) {
-        return super.generateFileNameForKeyValue(key, value, name)
-    }
+  @Override
+  protected String generateFileNameForKeyValue(K key, V value, String name) {
+    return super.generateFileNameForKeyValue(key, value, name)
+  }
 
-    @Override
-    public void checkOutputSpecs(FileSystem fileSystem, JobConf job)
-    throws IOException {
-        super.checkOutputSpecs(fileSystem, job);
-        String ext = OutputUtils.getExtension(job)
-        log.debug("extension is $ext")
-        extension = ext;
-    }
+  @Override
+  public void checkOutputSpecs(FileSystem fileSystem, JobConf job)
+  throws IOException {
+    super.checkOutputSpecs(fileSystem, job);
+    String ext = OutputUtils.getExtension(job)
+    log.debug("extension is $ext")
+    extension = ext;
+  }
 }

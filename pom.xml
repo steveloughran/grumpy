@@ -7,6 +7,8 @@
   <groupId>org.apache.hadoop.grumpy</groupId>
   <artifactId>grumpy</artifactId>
   <version>0.1</version>
+  <packaging>jar</packaging>
+
   <scm>
     <url>http://github.com/steveloughran/grumpy</url>
     <connection>scm:git:git://github.com/steveloughran/grumpy.git</connection>
@@ -20,7 +22,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -29,7 +30,7 @@
       <version>1.4</version>
 
     </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
@@ -106,6 +107,21 @@
     <plugins>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.hortonworks.servicemonitor.Monitor</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+
+      <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
         <version>1.4</version>
@@ -142,7 +158,28 @@
         </executions>
       </plugin>
 
+      
     </plugins>
+    
   </build>
 
+  <!-- mvn surefire-report:report -->
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.12</version>
+        <configuration>
+          <showSuccess>false</showSuccess>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

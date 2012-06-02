@@ -1,10 +1,9 @@
 package org.apache.hadoop.grumpy.projects.bluemine.mr
 
-import org.apache.hadoop.mapreduce.Mapper
-
 import groovy.util.logging.Commons
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
 import org.apache.hadoop.grumpy.projects.bluemine.utils.BluemineException
+import org.apache.hadoop.mapreduce.Mapper
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,21 +25,21 @@ import org.apache.hadoop.grumpy.projects.bluemine.utils.BluemineException
 @Commons
 class FilterDeviceByYear extends MapEmitDevice {
 
-    int year;
+  int year;
 
-    @Override
-    protected void setup(Mapper.Context context) {
-        super.setup(context)
-        year = context.configuration.getInt(FILTER_YEAR, 0)
-        if (year == 0) {
-            throw new BluemineException("Unset configuration option $FILTER_YEAR")
-        }
-        year -= 1900
-        log.info("Adjusted filter year is " + year)
+  @Override
+  protected void setup(Mapper.Context context) {
+    super.setup(context)
+    year = context.configuration.getInt(FILTER_YEAR, 0)
+    if (year == 0) {
+      throw new BluemineException("Unset configuration option $FILTER_YEAR")
     }
+    year -= 1900
+    log.info("Adjusted filter year is " + year)
+  }
 
-    @Override
-    protected boolean shouldEmit(BlueEvent event) {
-        return event.datestamp.year == year
-    }
+  @Override
+  protected boolean shouldEmit(BlueEvent event) {
+    return event.datestamp.year == year
+  }
 }

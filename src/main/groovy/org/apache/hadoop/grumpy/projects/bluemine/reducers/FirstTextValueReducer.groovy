@@ -10,11 +10,11 @@ import org.apache.hadoop.mapreduce.Reducer
 class FirstTextValueReducer extends Reducer<Text, Text, Text, Text> {
 
 
-    void reduce(Text key,
-                Iterable<Text> values,
-                Reducer.Context context) {
-        Text value = values.iterator().next()
-        context.write(key, value);
-    }
+  void reduce(Text key,
+              Iterable<Text> values,
+              Reducer.Context context) {
+    Text value = values.iterator().next()
+    context.write(key, value);
+  }
 
 }

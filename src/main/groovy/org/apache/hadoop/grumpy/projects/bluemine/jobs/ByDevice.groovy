@@ -1,11 +1,10 @@
 package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
-import org.apache.hadoop.mapred.JobConf
-
 import groovy.util.logging.Commons
 import org.apache.hadoop.grumpy.projects.bluemine.mr.MapEmitDevice
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
+import org.apache.hadoop.mapred.JobConf
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -27,35 +26,35 @@ import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 @Commons
 class ByDevice extends BlueMain {
 
-    static void main(String[] args) {
-        BlueMain main = new ByDevice()
-        executeAndExit(main, args)
+  static void main(String[] args) {
+    BlueMain main = new ByDevice()
+    executeAndExit(main, args)
+  }
+
+
+  @Override
+  String getName() {"ByDevice"}
+
+  @Override
+  protected boolean execute(String[] args) {
+    OptionAccessor options = parseCommandLine(args)
+    if (options == null) {
+      return false;
     }
-
-
-    @Override
-    String getName() {"ByDevice"}
-
-    @Override
-    protected boolean execute(String[] args) {
-        OptionAccessor options = parseCommandLine(args)
-        if (options == null) {
-            return false;
-        }
-        JobConf conf = new JobConf()
-        setTrackerURL(conf, options);
-        setFilesystemURL(conf, options);
-        loadProperties(conf, options)
-        BluemineJob job = BluemineJob.createBasicJob("bydevice",
-                conf,
-                MapEmitDevice,
-                EventCSVEmitReducer)
-        //job.combinerClass = CountReducer
-        job.mapOutputKeyClass = MapEmitDevice.keyClass()
-        job.mapOutputValueClass = MapEmitDevice.valueClass()
-        job.outputFormatClass = ExtTextOutputFormat
-        return bindAndExecute(options, job)
-    }
+    JobConf conf = new JobConf()
+    setTrackerURL(conf, options);
+    setFilesystemURL(conf, options);
+    loadProperties(conf, options)
+    BluemineJob job = BluemineJob.createBasicJob("bydevice",
+                                                 conf,
+                                                 MapEmitDevice,
+                                                 EventCSVEmitReducer)
+    //job.combinerClass = CountReducer
+    job.mapOutputKeyClass = MapEmitDevice.keyClass()
+    job.mapOutputValueClass = MapEmitDevice.valueClass()
+    job.outputFormatClass = ExtTextOutputFormat
+    return bindAndExecute(options, job)
+  }
 
 
 }

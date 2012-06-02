@@ -1,5 +1,6 @@
 package org.apache.hadoop.grumpy.projects.bluemine.output
 
+import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.FSDataOutputStream
 import org.apache.hadoop.fs.FileSystem
@@ -10,8 +11,6 @@ import org.apache.hadoop.mapreduce.RecordWriter
 import org.apache.hadoop.mapreduce.TaskAttemptContext
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
 import org.apache.hadoop.util.ReflectionUtils
-
-import groovy.util.logging.Commons
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -38,33 +37,33 @@ import groovy.util.logging.Commons
 @Commons
 class ExtTextOutputFormat<K, V> extends TextOutputFormat<K, V> implements ExtensionOptions {
 
-    @Override
-    public RecordWriter<K, V> getRecordWriter(TaskAttemptContext job) throws IOException, InterruptedException {
-        Configuration conf = job.getConfiguration();
-        boolean isCompressed = getCompressOutput(job);
-        String keyValueSeparator = conf.get(KEY_SEPARATOR, "\t");
-        CompressionCodec codec = null;
-        String codecExt = "";
-        if (isCompressed) {
-            Class<? extends CompressionCodec> codecClass =
-                getOutputCompressorClass(job, GzipCodec.class);
-            codec = (CompressionCodec) ReflectionUtils.newInstance(codecClass, conf);
-            codecExt = codec.getDefaultExtension();
-            log.info("Compressing with $codecClass extension=$codecExt")
-        }
-        String csv = OutputUtils.getExtension(conf)
-        String extension = csv + codecExt
-        log.info("Output extension =$extension")
-        Path file = getDefaultWorkFile(job, extension);
-        FileSystem fs = file.getFileSystem(conf);
-        if (!isCompressed) {
-            FSDataOutputStream fileOut = fs.create(file, false);
-            return new TextOutputFormat.LineRecordWriter<K, V>(fileOut, keyValueSeparator);
-        } else {
-            FSDataOutputStream fileOut = fs.create(file, false);
-            return new TextOutputFormat.LineRecordWriter<K, V>(new DataOutputStream
-            (codec.createOutputStream(fileOut)),
-                    keyValueSeparator);
-        }
+  @Override
+  public RecordWriter<K, V> getRecordWriter(TaskAttemptContext job) throws IOException, InterruptedException {
+    Configuration conf = job.getConfiguration();
+    boolean isCompressed = getCompressOutput(job);
+    String keyValueSeparator = conf.get(KEY_SEPARATOR, "\t");
+    CompressionCodec codec = null;
+    String codecExt = "";
+    if (isCompressed) {
+      Class<? extends CompressionCodec> codecClass =
+        getOutputCompressorClass(job, GzipCodec.class);
+      codec = (CompressionCodec) ReflectionUtils.newInstance(codecClass, conf);
+      codecExt = codec.getDefaultExtension();
+      log.info("Compressing with $codecClass extension=$codecExt")
     }
+    String csv = OutputUtils.getExtension(conf)
+    String extension = csv + codecExt
+    log.info("Output extension =$extension")
+    Path file = getDefaultWorkFile(job, extension);
+    FileSystem fs = file.getFileSystem(conf);
+    if (!isCompressed) {
+      FSDataOutputStream fileOut = fs.create(file, false);
+      return new TextOutputFormat.LineRecordWriter<K, V>(fileOut, keyValueSeparator);
+    } else {
+      FSDataOutputStream fileOut = fs.create(file, false);
+      return new TextOutputFormat.LineRecordWriter<K, V>(                                   new DataOutputStream
+                                                                                            (codec.createOutputStream(fileOut)),
+                                                                                            keyValueSeparator);
+    }
+  }
 }

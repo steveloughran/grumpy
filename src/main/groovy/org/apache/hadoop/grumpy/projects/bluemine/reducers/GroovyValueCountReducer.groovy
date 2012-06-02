@@ -8,14 +8,14 @@ import org.apache.hadoop.mapreduce.Reducer
 class GroovyValueCountReducer
 extends Reducer<Text, IntWritable, Text, IntWritable> {
 
-    IntWritable iw = new IntWritable()
+  IntWritable iw = new IntWritable()
 
-    void reduce(Text key,
-                Iterable<IntWritable> values,
-                Reducer.Context context) {
-        int sum = values.collect() { it.get() }.sum()
-        iw.set(sum)
-        context.write(key, iw);
-    }
+  void reduce(Text key,
+              Iterable<IntWritable> values,
+              Reducer.Context context) {
+    int sum = values.collect() { it.get() }.sum()
+    iw.set(sum)
+    context.write(key, iw);
+  }
 }
 

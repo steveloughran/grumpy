@@ -1,12 +1,11 @@
 package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
-import org.apache.hadoop.io.IntWritable
-import org.apache.hadoop.io.Text
-import org.apache.hadoop.mapred.JobConf
-
 import groovy.util.logging.Commons
 import org.apache.hadoop.grumpy.projects.bluemine.mr.MapToDayOfYear
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.CountReducer
+import org.apache.hadoop.io.IntWritable
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.mapred.JobConf
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,34 +27,34 @@ import org.apache.hadoop.grumpy.projects.bluemine.reducers.CountReducer
 @Commons
 class DayOfYearCount extends BlueMain {
 
-    static void main(String[] args) {
-        BlueMain main = new DayOfYearCount()
-        executeAndExit(main, args)
+  static void main(String[] args) {
+    BlueMain main = new DayOfYearCount()
+    executeAndExit(main, args)
+  }
+
+
+  @Override
+  String getName() {"DevCount"}
+
+  @Override
+  protected boolean execute(String[] args) {
+    OptionAccessor options = parseCommandLine(args)
+    if (options == null) {
+      return false;
     }
-
-
-    @Override
-    String getName() {"DevCount"}
-
-    @Override
-    protected boolean execute(String[] args) {
-        OptionAccessor options = parseCommandLine(args)
-        if (options == null) {
-            return false;
-        }
-        JobConf conf = new JobConf()
-        setTrackerURL(conf, options);
-        setFilesystemURL(conf, options);
-        loadProperties(conf, options)
-        BluemineJob job = BluemineJob.createBasicJob("devcount",
-                conf,
-                MapToDayOfYear,
-                CountReducer)
-        job.combinerClass = CountReducer
-        job.mapOutputKeyClass = Text
-        job.mapOutputValueClass = IntWritable
-        return bindAndExecute(options, job)
-    }
+    JobConf conf = new JobConf()
+    setTrackerURL(conf, options);
+    setFilesystemURL(conf, options);
+    loadProperties(conf, options)
+    BluemineJob job = BluemineJob.createBasicJob("devcount",
+                                                 conf,
+                                                 MapToDayOfYear,
+                                                 CountReducer)
+    job.combinerClass = CountReducer
+    job.mapOutputKeyClass = Text
+    job.mapOutputValueClass = IntWritable
+    return bindAndExecute(options, job)
+  }
 
 
 }

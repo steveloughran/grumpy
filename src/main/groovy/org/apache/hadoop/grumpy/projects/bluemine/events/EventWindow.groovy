@@ -20,71 +20,68 @@ import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
  * limitations under the License.
  */
 class EventWindow implements Iterable<BlueEvent> {
-    long windowDuration = BluemineOptions.DEBOUNCE_WINDOW
-    long insertDuration = BluemineOptions.INITIAL_DURATION
+  long windowDuration = BluemineOptions.DEBOUNCE_WINDOW
+  long insertDuration = BluemineOptions.INITIAL_DURATION
 
-    //use a linked list here on account of the many deletions off the head that are planned.
-    List<BlueEvent> window = new LinkedList<BlueEvent>()
+  //use a linked list here on account of the many deletions off the head that are planned.
+  List<BlueEvent> window = []
+
+  BlueEvent findMatchingEventInWindow(BlueEvent event) {
+    String devID = event.device
+    String gate = event.gate
+    BlueEvent found = window.find { it.device == devID && it.gate == gate }
+    return found
+  }
+
+  BlueEvent addClone(BlueEvent event) {
+    BlueEvent cloned = event.clone()
+    window.add(cloned);
+    cloned
+  }
 
 
-    BlueEvent findMatchingEventInWindow(BlueEvent event) {
-        String devID = event.device
-        String gate = event.gate
-        BlueEvent found = window.find { it.device == devID && it.gate == gate }
-        return found
+  Iterator<BlueEvent> iterator() {window.listIterator()}
+
+  List<BlueEvent> findAll(Closure closure) {
+    window.findAll(closure)
+  }
+
+  void removeAll(Collection c) {
+    window.removeAll(c)
+  }
+
+  int getSize() {
+    return window.size()
+  }
+
+  BlueEvent insert(BlueEvent event) {
+    if (!event.duration) {
+      event.duration = insertDuration
     }
-
-    BlueEvent addClone(BlueEvent event) {
-        BlueEvent cloned = event.clone()
-        window.add(cloned);
-        cloned
+    BlueEvent inWindow = findMatchingEventInWindow(event)
+    if (inWindow) {
+      //event in the window
+      //add its duration to the current event
+      inWindow.merge(event)
+    } else {
+      //no ongoing event, add a clone of it (remember, events get re-used, so a clone is mandatory)
+      inWindow = addClone(event)
     }
+    inWindow
+  }
 
+  /**
+   //go through the window and extract those that are out of range, that is their end time falls
+   // before the window duration of the next event
+   * @param now
+   * @return
+   */
+  List<BlueEvent> purgeExpired(BlueEvent now) {
 
-    @Override
-    Iterator<BlueEvent> iterator() {window.listIterator()}
+    long closingtime = now.endtime - windowDuration
 
-    @Override
-    List<BlueEvent> findAll(Closure closure) {
-        window.findAll(closure)
-    }
-
-    void removeAll(Collection c) {
-        window.removeAll(c)
-    }
-
-    int getSize() {
-        return window.size()
-    }
-
-    BlueEvent insert(BlueEvent event) {
-        if (!event.duration) {
-            event.duration = insertDuration
-        }
-        BlueEvent inWindow = findMatchingEventInWindow(event)
-        if (inWindow) {
-            //event in the window
-            //add its duration to the current event
-            inWindow.merge(event)
-        } else {
-            //no ongoing event, add a clone of it (remember, events get re-used, so a clone is mandatory)
-            inWindow = addClone(event)
-        }
-        inWindow
-    }
-
-    /**
-     //go through the window and extract those that are out of range, that is their end time falls
-     // before the window duration of the next event
-     * @param now
-     * @return
-     */
-    List<BlueEvent> purgeExpired(BlueEvent now) {
-
-        long closingtime = now.endtime - windowDuration
-
-        List<BlueEvent> expired = window.findAll { !it.overlaps(now) }
-        window.removeAll(expired)
-        expired
-    }
+    List<BlueEvent> expired = window.findAll { !it.overlaps(now) }
+    window.removeAll(expired)
+    expired
+  }
 }

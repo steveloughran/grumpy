@@ -1,15 +1,14 @@
 package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
-import org.apache.hadoop.io.Text
-import org.apache.hadoop.mapred.JobConf
-
 import groovy.util.logging.Commons
+import org.apache.hadoop.grumpy.ExitCodeException
 import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
 import org.apache.hadoop.grumpy.projects.bluemine.mr.FilterDeviceByYear
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtensionOptions
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
-import org.apache.hadoop.grumpy.ExitCodeException
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.mapred.JobConf
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -31,46 +30,46 @@ import org.apache.hadoop.grumpy.ExitCodeException
 @Commons
 class FilterByYear extends BlueMain {
 
-    static void main(String[] args) {
-        BlueMain main = new FilterByYear()
-        executeAndExit(main, args)
+  static void main(String[] args) {
+    BlueMain main = new FilterByYear()
+    executeAndExit(main, args)
+  }
+
+
+  @Override
+  String getName() {"FilterByYear"}
+
+  @Override
+  protected boolean execute(String[] args) {
+    OptionAccessor options = parseCommandLine(args)
+    if (options == null) {
+      return false;
     }
+    JobConf conf = new JobConf()
+    setTrackerURL(conf, options);
+    setFilesystemURL(conf, options);
+    loadProperties(conf, options)
+    BluemineJob job = BluemineJob.createBasicJob("byyear",
+                                                 conf,
+                                                 FilterDeviceByYear,
+                                                 EventCSVEmitReducer)
+    //job.combinerClass = CountReducer
+    job.mapOutputKeyClass = Text
+    job.mapOutputValueClass = BlueEvent
+    log.info("${ExtensionOptions.KEY_EXTENSION}=${job.get(ExtensionOptions.KEY_EXTENSION)}")
 
-
-    @Override
-    String getName() {"FilterByYear"}
-
-    @Override
-    protected boolean execute(String[] args) {
-        OptionAccessor options = parseCommandLine(args)
-        if (options == null) {
-            return false;
-        }
-        JobConf conf = new JobConf()
-        setTrackerURL(conf, options);
-        setFilesystemURL(conf, options);
-        loadProperties(conf, options)
-        BluemineJob job = BluemineJob.createBasicJob("byyear",
-                conf,
-                FilterDeviceByYear,
-                EventCSVEmitReducer)
-        //job.combinerClass = CountReducer
-        job.mapOutputKeyClass = Text
-        job.mapOutputValueClass = BlueEvent
-        log.info("${ExtensionOptions.KEY_EXTENSION}=${job.get(ExtensionOptions.KEY_EXTENSION)}")
-        
-        String year = job.get(BluemineOptions.FILTER_YEAR)
-        if (!year ) {
-            throw new ExitCodeException("Unset year: $year")
-        }
-        def y = Integer.parseInt(year)
-        if (y <=0 ) {
-            throw new ExitCodeException("Unsupported year value: $y")
-        }
+    String year = job.get(BluemineOptions.FILTER_YEAR)
+    if (!year) {
+      throw new ExitCodeException("Unset year: $year")
+    }
+    def y = Integer.parseInt(year)
+    if (y <= 0) {
+      throw new ExitCodeException("Unsupported year value: $y")
+    }
 
 //        job.compressOutputToGzip()
-        return bindAndExecute(options, job)
-    }
+    return bindAndExecute(options, job)
+  }
 
 
 }
