@@ -26,6 +26,7 @@ class DebounceTest extends BluemineTestBase {
   void testDebounceJob() {
     runEventCSVJob([:],
                    "debounce",
-                   DebounceMap)
+                   DebounceMap,
+                   [])
   }
 }

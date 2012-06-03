@@ -1,4 +1,4 @@
-package org.apache.hadoop.grumpy.projects.bluemine.output
+package org.apache.hadoop.grumpy.output
 
 import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
@@ -35,7 +35,7 @@ import org.apache.hadoop.util.ReflectionUtils
  * tweaks for groovy and a controllable extension option
  */
 @Commons
-class ExtTextOutputFormat<K, V> extends TextOutputFormat<K, V> implements ExtensionOptions {
+class NewAPIExtTextOutputFormat<K, V> extends TextOutputFormat<K, V> implements ExtensionOptions {
 
   @Override
   public RecordWriter<K, V> getRecordWriter(TaskAttemptContext job) throws IOException, InterruptedException {
@@ -61,9 +61,8 @@ class ExtTextOutputFormat<K, V> extends TextOutputFormat<K, V> implements Extens
       return new TextOutputFormat.LineRecordWriter<K, V>(fileOut, keyValueSeparator);
     } else {
       FSDataOutputStream fileOut = fs.create(file, false);
-      return new TextOutputFormat.LineRecordWriter<K, V>(                                   new DataOutputStream
-                                                                                            (codec.createOutputStream(fileOut)),
-                                                                                            keyValueSeparator);
+      return new TextOutputFormat.LineRecordWriter<K, V>( 
+          new DataOutputStream(codec.createOutputStream(fileOut)), keyValueSeparator);
     }
   }
 }

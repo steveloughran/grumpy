@@ -19,32 +19,30 @@
 
 package org.apache.hadoop.grumpy.scripted
 
-import org.apache.hadoop.io.Writable
-import org.apache.hadoop.mapreduce.Mapper
 import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.mapreduce.Reducer
 
-class ScriptedMapper extends Mapper<Writable, Writable, Writable, Writable> {
+class ScriptedReducer extends Reducer {
 
-  private Mapper.Context context;
+  private Reducer.Context context;
 
   private Script map;
   private Configuration configuration
 
   @Override
-  protected void setup(Mapper.Context ctx) {
+  protected void setup(Reducer.Context ctx) {
     this.context = ctx
     this.configuration = ctx.configuration
     ScriptCompiler compiler = new ScriptCompiler(configuration)
-    String scriptText = configuration[ScriptKeys.MAPSCRIPT];
+    String scriptText = configuration[ScriptKeys.REDSCRIPT];
     map = compiler.parseScriptOperation(scriptText, this, ctx)
 
   }
 
   @Override
-  protected void map(Writable key, Writable value, Mapper.Context context) {
-    map.setProperty('key',key)
-    map.setProperty('value',value)
+  protected void reduce(Object key, Iterable values, Reducer.Context context) {
+    map.setProperty('key', key)
+    map.setProperty('values', values)
     map.run()
   }
-
 }

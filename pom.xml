@@ -102,6 +102,27 @@
     </dependency>
   </dependencies>
 
+
+  <!-- mvn surefire-report:report -->
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.12</version>
+        <configuration>
+          <showSuccess>false</showSuccess>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <build>
 
     <plugins>
@@ -163,33 +184,32 @@
     
   </build>
 
-  <!-- mvn surefire-report:report -->
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.12</version>
-        <configuration>
-          <showSuccess>false</showSuccess>
-          <systemProperties>
-            <property>
-              <name>test.input.data.dir</name>
-              <value>${user.dir}/data/small/gzip</value>
-            </property>
-            <property>
-              <name>test.output.data.dir</name>
-              <value>target/surefire/out</value>
-            </property>
-          </systemProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
+  <profiles>  
+    <profile>
+      <id>vsphere</id>
+      <activation>
+        <property>
+          <name>vsphere</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-classpath</argument>
+                <classpath/>
+                <argument>com.hortonworks.servicemonitor.Monitor</argument>
+                <argument>conf/vm-namenode.xml</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

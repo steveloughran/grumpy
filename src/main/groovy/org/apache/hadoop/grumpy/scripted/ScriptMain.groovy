@@ -20,8 +20,11 @@ package org.apache.hadoop.grumpy.scripted
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
+import org.apache.hadoop.grumpy.GrumpyJob
 import org.apache.hadoop.grumpy.tools.AbstractRunnableTool
+import org.apache.hadoop.grumpy.tools.GrumpyToolRunner
 import org.apache.hadoop.grumpy.tools.GrumpyUtils
+import org.apache.hadoop.mapred.JobConf
 
 class ScriptMain extends AbstractRunnableTool {
 
@@ -40,6 +43,7 @@ class ScriptMain extends AbstractRunnableTool {
       'pf' longOpt: 'pfile', args: 1, argName: 'properties', 'Property file'
       't' longOpt: 'terminate', args: 1, argName: 'terminate', 'terminate job if client program is interrupted '
       'v' longOpt: 'verbose', 'verbose job output'
+      'k' longOpt: 'killable', 'kill the job if the client process is killed'
     }
 
     def mapOpt = new Option('ms', 'mapscript', true, 'Mapper Script')
@@ -56,12 +60,22 @@ class ScriptMain extends AbstractRunnableTool {
     OptionAccessor opts = new OptionAccessor(commandLine)
 
     File mapscriptF = GrumpyUtils.requiredFile(opts.'ms', "Mapper Script")
-    conf[ScriptKeys.MAPSCRIPT]=mapscriptF.text
-    
+    conf[ScriptKeys.MAPSCRIPT] = mapscriptF.text
+
     File redscriptF = GrumpyUtils.requiredFile(opts.'rs', "Reducer Script")
-    conf[ScriptKeys.REDSCRIPT]=redscriptF.text
-    
-    true
+    conf[ScriptKeys.REDSCRIPT] = redscriptF.text
+
+    GrumpyJob job = GrumpyJob.createBasicJob("scriptedmain",
+                                             new JobConf(conf),
+                                             ScriptedMapper,
+                                             ScriptedReducer)
+    return job.submitAndWait(commandLine.hasOption('v'),
+                             commandLine.hasOption('k'))
   }
-  
+
+
+  static void main(String[] args) {
+    GrumpyToolRunner.executeAndExit(new ScriptMain(), args)
+  }
+
 }

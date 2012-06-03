@@ -29,6 +29,9 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat
 
 import org.apache.hadoop.grumpy.tools.GrumpyUtils
+import org.apache.hadoop.grumpy.output.ExtensionOptions
+import org.apache.hadoop.mapred.JobConf
+import org.apache.hadoop.grumpy.tools.JobKiller
 
 /**
  * This class 
@@ -198,5 +201,58 @@ class GrumpyJob extends Job {
       log.debug("Failed to kill job: " + e, e)
       return false
     }
+  }
+
+  /**
+   * Hit the switch to say "CSV output", use the extended text output format for this
+   */
+  void outputCSVFiles() {
+    set(ExtensionOptions.KEY_EXTENSION, ".csv")
+    set(ExtensionOptions.KEY_SEPARATOR, ",")
+//    set(OUTPUT_FORMAT_CLASS_ATTR, NewAPIExtTextOutputFormat.name)
+  }
+
+  /**
+   * Submit the job and wait for it to finish
+   * @param verbose
+   * @param terminateOnClientKill
+   * @return
+   */
+  boolean submitAndWait(boolean verbose, boolean terminateOnClientKill) {
+    submit()
+    //get the job ID
+    JobKiller terminator = JobKiller.targetForTermination(this)
+    try {
+      return waitForCompletion(verbose)
+    } finally {
+      terminator.unregister()
+    }
+  }
+  /**
+   * Create a basic job with the given M & R classes. 
+   * The Groovy JAR is added as another needed JAR; the mapClass is set as the main jar of the job
+   * @param name job name
+   * @param conf configuration
+   * @param mapClass mapper
+   * @param reduceClass reducer
+   * @return a job
+   */
+  static GrumpyJob createBasicJob(String name,
+                                  JobConf conf,
+                                  Class mapClass,
+                                  Class reduceClass) {
+
+    GrumpyJob job = new GrumpyJob(conf, name)
+
+    job.addGroovyJar();
+    log.info(" map class is $mapClass reduce class is $reduceClass")
+    String jar = GrumpyUtils.findContainingJar(mapClass)
+    log.info(" map class is at $jar")
+    job.jarByClass = mapClass
+    job.mapperClass = mapClass
+    job.reducerClass = reduceClass
+    //set up csv output 
+    job.outputCSVFiles();
+    job
   }
 }

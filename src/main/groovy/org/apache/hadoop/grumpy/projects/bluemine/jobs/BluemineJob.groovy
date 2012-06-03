@@ -5,8 +5,6 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.grumpy.GrumpyJob
 import org.apache.hadoop.grumpy.Keys
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
-import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
-import org.apache.hadoop.grumpy.projects.bluemine.output.ExtensionOptions
 
 import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapred.JobConf
@@ -87,11 +85,6 @@ class BluemineJob extends GrumpyJob {
     outputCSVFiles()
   }
 
-  void outputCSVFiles() {
-    set(ExtensionOptions.KEY_EXTENSION, ".csv")
-    set(ExtensionOptions.KEY_SEPARATOR, ",")
-    set(OUTPUT_FORMAT_CLASS_ATTR, ExtTextOutputFormat.name)
-  }
 
   /**
    * Create a basic job with the given M & R jobs. 

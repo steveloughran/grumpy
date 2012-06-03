@@ -1,4 +1,4 @@
-package org.apache.hadoop.grumpy.projects.bluemine.output
+package org.apache.hadoop.grumpy.output
 
 import org.apache.hadoop.conf.Configuration
 

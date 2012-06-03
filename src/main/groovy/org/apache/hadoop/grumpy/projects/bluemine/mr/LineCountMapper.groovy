@@ -6,7 +6,7 @@ import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapreduce.Mapper
 
 @SuppressWarnings("GroovyAssignabilityCheck")
-class GroovyLineCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+class LineCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
   static final def emitKey = new Text("lines")
   static final def one = new IntWritable(1)

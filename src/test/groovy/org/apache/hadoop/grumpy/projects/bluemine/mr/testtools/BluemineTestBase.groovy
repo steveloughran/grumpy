@@ -4,11 +4,12 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.grumpy.GrumpyJob
 import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
 import org.apache.hadoop.grumpy.projects.bluemine.jobs.BluemineJob
-import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
+
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.CountReducer
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 import org.apache.hadoop.grumpy.tools.GrumpyHadoopTestBase
 import org.apache.hadoop.io.IntWritable
+import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
 
 /**
  *
@@ -138,7 +139,7 @@ class BluemineTestBase extends GrumpyHadoopTestBase implements BluemineOptions {
                                 mapper,
                                 CountReducer)
     job.mapOutputValueClass = IntWritable
-    job.outputFormatClass = ExtTextOutputFormat
+    job.outputFormatClass = NewAPIExtTextOutputFormat
     runJob(job)
     dumpDir(LOG, outDir)
     outDir

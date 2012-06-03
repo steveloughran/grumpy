@@ -2,7 +2,7 @@ package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
 import groovy.util.logging.Commons
 import org.apache.hadoop.grumpy.projects.bluemine.mr.MapEmitDevice
-import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
+import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 import org.apache.hadoop.mapred.JobConf
 
@@ -52,7 +52,7 @@ class ByDevice extends BlueMain {
     //job.combinerClass = CountReducer
     job.mapOutputKeyClass = MapEmitDevice.keyClass()
     job.mapOutputValueClass = MapEmitDevice.valueClass()
-    job.outputFormatClass = ExtTextOutputFormat
+    job.outputFormatClass = NewAPIExtTextOutputFormat
     return bindAndExecute(options, job)
   }
 
