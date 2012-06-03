@@ -17,9 +17,27 @@
  limitations under the License.
  */
 
-package org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy.scripted
 
+import org.apache.hadoop.conf.Configuration
 
-class ScriptMapOperation extends ScriptOperation {
+class ScriptReduceOperation {
   
+  def owner;
+  Configuration config;
+  def context;
+ 
+  
+  def run() {
+    
+  }
+  
+  
+  def emit(def key, def value) {
+    context.write(key, value);
+  }
+  
+  def increment(def group, def key, int value) {
+    context.getCounter(group, key).increment(value)
+  }
 }

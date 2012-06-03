@@ -3,14 +3,12 @@ package org.apache.hadoop.grumpy.tools
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.hadoop.conf.Configuration
-
+import org.apache.hadoop.grumpy.GrumpyJob
+import org.apache.hadoop.hdfs.MiniDFSCluster
 import org.apache.hadoop.io.IntWritable
 import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapred.JobConf
-
 import org.apache.hadoop.mapred.MiniMRCluster
-import org.apache.hadoop.hdfs.MiniDFSCluster
-import org.apache.hadoop.grumpy.GrumpyJob
 
 /**
  * This is a groovy test base for Hadoop MR jobs
@@ -52,8 +50,6 @@ implements Closeable {
     return new JobConf();
   }
 
-
-
   @Override
   protected void tearDown() {
     close()
@@ -84,7 +80,7 @@ implements Closeable {
                                    reduceClass)
     job.mapOutputKeyClass = Text.class
     job.mapOutputValueClass = IntWritable.class
-    return job
+    job
   }
 
   GrumpyJob createBasicJob(String name,
@@ -95,7 +91,7 @@ implements Closeable {
     job.jarByClass = mapClass
     job.mapperClass = mapClass
     job.reducerClass = reduceClass
-    return job
+    job
   }
 
   void setupOutput(GrumpyJob job, String outputURL) {
@@ -115,7 +111,7 @@ implements Closeable {
   }
 
   File getTestDataDir() {
-    File dataDirectory = getSyspropFile(TEST_INPUT_DATA_DIR)
+    File dataDirectory = getSyspropFile(TEST_INPUT_DATA_DIR,Sysprops['user.dir']+'/data/small/')
     if (!dataDirectory.exists()) {
       throw new IOException("Property ${TEST_INPUT_DATA_DIR} is set to a nonexistent directory ${dataDirectory}")
     }
@@ -132,9 +128,13 @@ implements Closeable {
    * @throws IOException if the property is unset
    */
   protected File getSyspropFile(String propertyName) throws IOException {
-    String dataDir = System.getProperty(propertyName)
+    getSyspropFile propertyName, null
+  }
+
+  protected File getSyspropFile(String propertyName, String defVal) throws IOException {
+    String dataDir = Sysprops[propertyName] ?: defVal
     if (!dataDir) {
-      throw new IOException("Unset property: ${propertyName} ");
+      throw new IOException("Unset property: ${propertyName} in ${Sysprops.systemPropertyList}");
     }
     File dataDirectory = new File(dataDir)
     return dataDirectory
@@ -147,12 +147,11 @@ implements Closeable {
    * @return the output directory for the job
    * @throws IOException if the property is unset
    */
-  File prepareTestOutputDir(GrumpyJob job, String testDir)
-  throws IOException {
-    File outDir = getSyspropFile(TEST_OUTPUT_DATA_DIR)
+  File prepareTestOutputDir(GrumpyJob job, String testDir) throws IOException {
+    File outDir = getSyspropFile(TEST_OUTPUT_DATA_DIR, Sysprops['user.dir']+"/target/surefire/out")
     log.info("${TEST_OUTPUT_DATA_DIR} = ${outDir}")
     File jobOutDir = new File(outDir, testDir);
-    GrumpyTools.deleteDirectoryTree(jobOutDir)
+    GrumpyUtils.deleteDirectoryTree(jobOutDir)
     return jobOutDir
   }
 
@@ -183,6 +182,6 @@ implements Closeable {
   }
 
   long dumpDir(Log dumpLog, File dir) {
-    GrumpyTools.dumpDir(dumpLog, dir, "part-")
+    GrumpyUtils.dumpDir(dumpLog, dir, "part-")
   }
 }

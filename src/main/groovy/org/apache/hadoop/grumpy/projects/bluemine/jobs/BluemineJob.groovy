@@ -7,9 +7,11 @@ import org.apache.hadoop.grumpy.Keys
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtTextOutputFormat
 import org.apache.hadoop.grumpy.projects.bluemine.output.ExtensionOptions
-import org.apache.hadoop.grumpy.tools.GrumpyTools
+
 import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapred.JobConf
+
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -109,7 +111,7 @@ class BluemineJob extends GrumpyJob {
 
     job.addGroovyJar();
     log.info(" map class is $mapClass reduce class is $reduceClass")
-    String jar = GrumpyTools.findContainingJar(mapClass)
+    String jar = GrumpyUtils.findContainingJar(mapClass)
     log.info(" map class is at $jar")
     job.jarByClass = mapClass
     job.mapperClass = mapClass

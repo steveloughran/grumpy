@@ -143,7 +143,7 @@
           <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>1.8.3</version>
+            <version>1.8.5</version>
           </dependency>
         </dependencies>
         <executions>
@@ -172,6 +172,16 @@
         <version>2.12</version>
         <configuration>
           <showSuccess>false</showSuccess>
+          <systemProperties>
+            <property>
+              <name>test.input.data.dir</name>
+              <value>${user.dir}/data/small/gzip</value>
+            </property>
+            <property>
+              <name>test.output.data.dir</name>
+              <value>target/surefire/out</value>
+            </property>
+          </systemProperties>
         </configuration>
       </plugin>
 

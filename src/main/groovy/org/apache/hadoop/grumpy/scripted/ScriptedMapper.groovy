@@ -17,28 +17,37 @@
  limitations under the License.
  */
 
-package org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy.scripted
 
+import org.apache.hadoop.io.Writable
+import org.apache.hadoop.mapreduce.Mapper
 import org.apache.hadoop.conf.Configuration
 
-class ScriptOperation {
+class ScriptedMapper extends Mapper<Writable, Writable, Writable, Writable> {
+
+  Mapper.Context context;
   
-  def owner;
-  def context;
-  Configuration configuration;
-  def key, value;
- 
-  
-  def run() {
-    
+  Script map;
+  Configuration configuration
+
+  @Override
+  protected void setup(Mapper.Context ctx) {
+    this.context = ctx
+    this.configuration = ctx.configuration
+    ScriptCompiler compiler = new ScriptCompiler()
+    String scriptText = configuration['scriptedmapper.map'];
+    map = compiler.parseScriptOperation(scriptText, configuration, this, ctx)
+
   }
-  
-  
-  def emit(def key, def value) {
-    context.write(key, value);
+
+  @Override
+  protected void map(Writable key, Writable value, Mapper.Context context) {
+    map.setProperty('key',key)
+    map.setProperty('value',value)
+    map.run()
   }
-  
-  def increment(def group, def key, int value) {
-    context.getCounter(group, key).increment(value)
+
+  @Override
+  protected void cleanup(Mapper.Context ctx) {
   }
 }

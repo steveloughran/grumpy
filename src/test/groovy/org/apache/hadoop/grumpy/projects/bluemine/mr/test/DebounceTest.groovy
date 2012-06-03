@@ -8,24 +8,24 @@ import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 
 class DebounceTest extends BluemineTestBase {
 
-    void testDebounceSmall() {
-        BluemineJob job
-        File outDir
-        (job, outDir) = createMRJobNoDataset("debounce-small",
-                DebounceMap,
-                EventCSVEmitReducer)
-        addDataset(job, GATE1_SMALL)
-        makeMapEmitEvents(job)
-        job.compressOutputToGzip()
-        runJob(job)
-        dumpDir(LOG, outDir)
-        outDir
-    }
+  void testDebounceSmall() {
+    BluemineJob job
+    File outDir
+    (job, outDir) = createMRJobNoDataset("debounce-small",
+                                         DebounceMap,
+                                         EventCSVEmitReducer)
+    addDataset(job, GATE1_SMALL)
+    makeMapEmitEvents(job)
+    job.compressOutputToGzip()
+    runJob(job)
+    dumpDir(LOG, outDir)
+    outDir
+  }
 
 
-    void testDebounceJob() {
-        runEventCSVJob([:],
-                "debounce",
-                DebounceMap)
-    }
+  void testDebounceJob() {
+    runEventCSVJob([:],
+                   "debounce",
+                   DebounceMap)
+  }
 }

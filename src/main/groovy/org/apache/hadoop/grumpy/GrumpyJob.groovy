@@ -20,7 +20,7 @@ package org.apache.hadoop.grumpy
 import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
-import org.apache.hadoop.grumpy.tools.GrumpyTools
+
 import org.apache.hadoop.io.SequenceFile
 import org.apache.hadoop.io.compress.GzipCodec
 import org.apache.hadoop.mapred.SequenceFileOutputFormat
@@ -28,21 +28,26 @@ import org.apache.hadoop.mapreduce.Job
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat
 
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
+
 /**
  * This class 
  */
 @Commons
 class GrumpyJob extends Job {
 
-  GrumpyJob(String jobName) {
+  GrumpyJob() throws IOException {
+  }
+
+  GrumpyJob(String jobName) throws IOException{
     super(new Configuration(), jobName)
   }
 
-  GrumpyJob(Configuration conf) {
+  GrumpyJob(Configuration conf) throws IOException {
     super(conf)
   }
 
-  GrumpyJob(Configuration conf, String jobName) {
+  GrumpyJob(Configuration conf, String jobName) throws IOException {
     super(conf, jobName)
   }
 
@@ -58,17 +63,17 @@ class GrumpyJob extends Job {
 
 
   void setupOutput(File output) {
-    String outputURL = GrumpyTools.convertToUrl(output)
+    String outputURL = GrumpyUtils.convertToUrl(output)
     setupOutput(outputURL)
   }
 
   void addInput(File input) {
-    String inputURL = GrumpyTools.convertToUrl(input)
+    String inputURL = GrumpyUtils.convertToUrl(input)
     addInput(inputURL)
   }
 
   void addJarList(List jarlist) {
-    String listAsString = GrumpyTools.joinList(jarlist, ",")
+    String listAsString = GrumpyUtils.joinList(jarlist, ",")
     configuration.set(Keys.JOB_KEY_JARS, listAsString)
   }
 
@@ -84,7 +89,7 @@ class GrumpyJob extends Job {
   }
 
   String addJar(Class jarClass) {
-    String file = GrumpyTools.findContainingJar(jarClass)
+    String file = GrumpyUtils.findContainingJar(jarClass)
     if (!file) {
       throw new FileNotFoundException("No JAR containing class \"${jarClass}\"")
     }
@@ -164,13 +169,20 @@ class GrumpyJob extends Job {
    */
   void applyOptions(Map options) {
     log.debug("Setting options $options")
-    if (options != null) {
+    if (options) {
       options.each { elt ->
         String key = elt.key.toString()
         String val = elt.value.toString()
         log.debug("settings $key=$val")
         set(key, val)
       }
+    }
+  }
+  
+  void applyOptionList(List options) {
+    if(options) options.each { tuple ->
+      def (k, v) = tuple
+      set (k.toString(), v.toString())
     }
   }
 

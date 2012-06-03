@@ -5,8 +5,8 @@ import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
 
 class HourCountTest extends BluemineTestBase {
 
-    void testHourCount() {
-        runCountJob("hourcount", MapToHour)
-    }
+  void testHourCount() {
+    runCountJob("hourcount", MapToHour)
+  }
 
 }

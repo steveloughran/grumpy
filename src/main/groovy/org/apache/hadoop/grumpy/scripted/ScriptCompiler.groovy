@@ -16,16 +16,37 @@
  * limitations under the License.
  */
 
-package org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy.scripted
 
 import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configured
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.apache.hadoop.conf.Configuration
 
+/**
+ * This is the script compiler. It must be set 
+ */
 @Commons
 class ScriptCompiler extends Configured {
 
+  //classloader to use -defaults to this class's but can be redefined
+  ClassLoader classLoader;
+
+  ScriptCompiler() {
+    this(null)
+  }
+
+  ScriptCompiler(Configuration conf) {
+    super(conf)
+    classLoader = this.getClass().getClassLoader()
+  }
+
+  /**
+   * Loads a script from a file
+   * @param scriptFile
+   * @param baseclass
+   * @return
+   */
   private Script loadScript(File scriptFile, Class baseclass) {
     if (!scriptFile.exists()) {
       throw new IOException("No script file \"$scriptFile\"")
@@ -34,37 +55,56 @@ class ScriptCompiler extends Configured {
     parseScript(text, baseclass)
   }
 
+  /**
+   * 
+   * @param text
+   * @param baseclass
+   * @param owner
+   * @param context
+   * @return
+   */
   public Script parseScript(String text, Class baseclass) {
     Script script;
 
-    CompilerConfiguration cconf = new CompilerConfiguration()
+    CompilerConfiguration compilerConf = new CompilerConfiguration()
     //set the base class for the script. This will be loaded with a new classloader, so the
     //resulting script cannot be cast back to an instance, or invoked with new types.
-    cconf.setScriptBaseClass(baseclass.name)
+    compilerConf.setScriptBaseClass(baseclass.name)
 
     //instead params are passed down via the binding
     Binding binding = new Binding()
-    binding.setVariable("configuration", getConf())
-    GroovyShell shell = new GroovyShell(this.getClass().getClassLoader(), binding, cconf)
+    binding.setVariable("conf", getConf())
+
+    GroovyShell shell = new GroovyShell(classLoader, binding, compilerConf)
     script = shell.parse(text)
     if (!script) {
       throw new IOException("Null script")
     }
+    script.setProperty('configuration', compilerConf)
+
     //script.init()
-    script;
+    script
+  }
+
+  /**
+   * 
+   * @param scriptText text of script
+   * @param compilerConf the compiler configuration
+   * @param owner owning MR
+   * @param context Map or Reduce context
+   * @return the parsed script
+   */
+  public Script parseScriptOperation(String scriptText, 
+                                  def owner, 
+                                  def context) {
+    
+    Script script = parseScript(scriptText, ScriptOperation)
+    //set the properties of the owner class
+    script.setProperty('owner', owner)
+    script.setProperty('context', context)
+    script
   }
   
-  public Script parseOperation(String text, 
-                               def owner, 
-                               Configuration configuration,
-                               def context) {
-    
-    Script script = parseScript(text, ScriptOperation)
-    //set the properties of the owner class
-    script.setProperty('owner',owner)
-    script.setProperty('context',context)
-    script.setProperty('configuration', configuration)
-  }
 
 
 }

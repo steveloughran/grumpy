@@ -6,8 +6,8 @@ import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
 class DevCountTest extends BluemineTestBase {
 
 
-    void testDevCount() {
-        runCountJob("devcount", DeviceCountMap)
-    }
+  void testDevCount() {
+    runCountJob("devcount", DeviceCountMap)
+  }
 
 }

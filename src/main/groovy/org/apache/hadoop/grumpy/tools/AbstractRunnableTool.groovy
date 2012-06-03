@@ -17,38 +17,33 @@
  limitations under the License.
  */
 
-package org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy.tools
 
-import org.apache.hadoop.io.Text
-import org.apache.hadoop.io.Writable
-import org.apache.hadoop.mapreduce.Mapper
 import org.apache.hadoop.conf.Configuration
+import org.apache.commons.cli.Options
 
-class ScriptedMapper extends Mapper<Writable, Writable, Writable, Writable> {
-
-  Mapper.Context context;
+abstract class AbstractRunnableTool implements RunnableTool {
   
-  Script map;
-  Configuration configuration
+  Configuration conf;
 
   @Override
-  protected void setup(Mapper.Context ctx) {
-    this.context = ctx
-    this.configuration = ctx.configuration
-    ScriptCompiler compiler = new ScriptCompiler()
-    String scriptText = configuration['scriptedmapper.map'];
-    Script map = compiler.parseOperation(scriptText, this, configuration, ctx)
-
+  Options createToolSpecificOptions() {
+    return null
   }
 
   @Override
-  protected void map(Writable key, Writable value, Mapper.Context context) {
-    map.setProperty('key',key)
-    map.setProperty('value',value)
-    map.run()
+  String getUsageHeader() {
+    "Tool"
   }
 
   @Override
-  protected void cleanup(Mapper.Context ctx) {
+  String getToolName() {
+    ""
   }
+
+  @Override
+  String getUsageFooter() {
+    ""
+  }
+  
 }

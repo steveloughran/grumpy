@@ -5,7 +5,7 @@ import org.apache.hadoop.mapred.MiniMRCluster
 import org.apache.hadoop.hdfs.MiniDFSCluster
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hdfs.server.common.HdfsConstants
-import org.apache.hadoop.grumpy.Sysprops
+
 import org.apache.hadoop.grumpy.Keys
 
 class MiniClusters {

@@ -17,15 +17,19 @@
  limitations under the License.
  */
 
-package org.apache.hadoop.grumpy
+package org.apache.hadoop.grumpy.scripted
 
 import org.apache.hadoop.conf.Configuration
 
-class ScriptReduceOperation {
+/**
+ * This is the base class for scripted map or reducers
+ */
+class ScriptOperation {
   
   def owner;
-  Configuration config;
   def context;
+  Configuration configuration;
+  def key, value;
  
   
   def run() {

@@ -8,6 +8,8 @@ import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
 import org.apache.hadoop.grumpy.tools.JobKiller
 import org.apache.hadoop.mapred.JobConf
 
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -80,36 +82,8 @@ abstract class BlueMain {
     return options
   }
 
-  protected static File requiredFile(String role, String name) {
-    File file = new File(name)
-    if (!file.exists()) {
-      throw new ExitCodeException("$role file not found: \"${file.canonicalPath}\"");
-    }
-    file
-  }
 
-  protected static File requiredDir(String name) {
-    File dir = requiredFile("", name)
-    if (!dir.directory) {
-      throw new ExitCodeException("Not a directory: " + dir.canonicalPath)
-    }
-    dir
-  }
 
-  protected static File maybeCreateDir(String name) {
-    File dir = new File(name)
-    if (!dir.exists()) {
-      //this is what we want
-      if (!dir.mkdirs()) {
-        throw new ExitCodeException("Failed to create directory " + dir.canonicalPath)
-      }
-    } else {
-      if (!dir.directory) {
-        throw new ExitCodeException("Not a directory: " + dir.canonicalPath)
-      }
-    }
-    dir
-  }
 
   protected static File outputDir(String name, boolean delete) {
     File dir = new File(name)
@@ -197,7 +171,7 @@ abstract class BlueMain {
     if (source) {
       File srcDir
       log.debug("Unresolved --source is $source")
-      srcDir = requiredFile("Job source ", source)
+      srcDir = GrumpyUtils.requiredFile(source, "Job source ")
       log.info("Source URL is $srcDir")
       job.addInput(srcDir)
     } else {
@@ -206,7 +180,7 @@ abstract class BlueMain {
         throw new ExitCodeException("No source set with -s or -r")
       }
       log.info("Source URL is $source")
-      job.addInput(source)
+      job.addInput((String)source)
     }
   }
 
@@ -218,7 +192,7 @@ abstract class BlueMain {
   protected void loadPropertyFile(JobConf conf, String propertyFilename, boolean required) {
     if (propertyFilename) {
       File propFile = new File(propertyFilename)
-      if (required) requiredFile("Property file", propertyFilename)
+      if (required) GrumpyUtils.requiredFile(propertyFilename, "Property file")
       log.info("Loading property file $propFile")
       Properties props = new Properties()
       props.load(new FileInputStream(propFile))
@@ -253,7 +227,7 @@ abstract class BlueMain {
   protected void setTrackerURL(JobConf conf, OptionAccessor options) {
     String jtURL = options.j ?: BluemineOptions.DEFAULT_JOB_TRACKER;
     log.info("Job tracker URL = $jtURL")
-    GrumpyTools.checkURL("Job tracker", jtURL, 15000)
+    GrumpyUtils.checkURL("Job tracker", jtURL, 15000)
     conf.set("mapred.job.tracker", jtURL)
   }
 

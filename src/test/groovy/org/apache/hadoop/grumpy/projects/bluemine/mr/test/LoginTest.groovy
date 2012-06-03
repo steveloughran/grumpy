@@ -6,9 +6,9 @@ import org.junit.Test
 
 public class LoginTest extends GroovyTestCase {
 
-    @Test
-    public void testLogin() throws Throwable {
-        UserGroupInformation ugi = UserGroupInformation.currentUser;
-        assertNotNull(ugi)
-    }
+  @Test
+  public void testLogin() throws Throwable {
+    UserGroupInformation ugi = UserGroupInformation.currentUser;
+    assertNotNull(ugi)
+  }
 }
