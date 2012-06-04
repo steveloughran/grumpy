@@ -94,7 +94,7 @@ class ScriptCompiler extends Configured {
    * @param context Map or Reduce context
    * @return the parsed script
    */
-  public Script parseScriptOperation(String scriptText, 
+  public Script parse(String scriptText, 
                                   def owner, 
                                   def context) {
     

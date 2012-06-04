@@ -38,7 +38,7 @@ class ScriptMapper extends MapReduceBase implements Mapper {
     conf = job 
     //load in the file
     ScriptCompiler scriptCompiler = new ScriptCompiler(conf)
-    operation = scriptCompiler.parseScriptOperation(conf[ScriptKeys.MAPSCRIPT].toString(),
+    operation = scriptCompiler.parse(conf[ScriptKeys.MAPSCRIPT].toString(),
                                                            this,
                                                            this)
   }

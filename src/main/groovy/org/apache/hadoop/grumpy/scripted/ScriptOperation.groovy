@@ -20,28 +20,47 @@
 package org.apache.hadoop.grumpy.scripted
 
 import org.apache.hadoop.conf.Configuration
+import groovy.util.logging.Commons
 
 /**
  * This is the base class for scripted map or reducers
  */
-class ScriptOperation {
-  
+@Commons
+class ScriptOperation extends Script {
+
+  public static final String CONTEXT = "context"
+  public static final String KEY = "key"
+  public static final String VALUE = "value"
   def owner;
-  def context;
-  Configuration configuration;
-  def key, value;
  
-  
-  def run() {
-    
-  }
-  
-  
+  def info(def text) {
+    log.info(text)
+  }  
+
   def emit(def key, def value) {
-    context.write(key, value);
+    def ctx = getContext()
+    ctx.write(key, value);
+  }
+
+  def getContext() {
+    getProperty(CONTEXT)
+  }
+
+  def getKV() {
+    def key = getProperty(KEY)
+    def value = getProperty(VALUE)
+    [key, value]
   }
   
   def increment(def group, def key, int value) {
     context.getCounter(group, key).increment(value)
+  }
+
+  @Override
+  Object run() {
+    def (k, v) = getKV()
+    info("in the script key=$k value=$v")
+    increment("ScriptOperation","lines",1)
+    
   }
 }

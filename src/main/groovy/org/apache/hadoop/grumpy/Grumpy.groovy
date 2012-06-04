@@ -14,20 +14,21 @@ class Grumpy {
 
   static {
     /** array assignment for job confs */
-    Configuration.metaClass.setAt = { k, v ->
-      set(k.toString(), v.toString())
+    Configuration.metaClass.setAt = { key, val ->
+      set(key.toString(), val.toString())
     }
 
-    Configuration.metaClass.getAt = { k ->
-      get(k)
+    Configuration.metaClass.getAt = { key ->
+      get(key)
     }
 
     /**
      * Add an entire map
      */
     Configuration.metaClass.add = {map ->
-      map.each {mapEntry ->
-        set((mapEntry.key).toString(), (mapEntry.value).toString() )
+      map.each {elt ->
+        set((elt.key).toString(),
+            (elt.value).toString() )
       }
     }
 

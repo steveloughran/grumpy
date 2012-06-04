@@ -25,25 +25,24 @@ import org.apache.hadoop.conf.Configuration
 
 class ScriptedMapper extends Mapper<Writable, Writable, Writable, Writable> {
 
-  private Mapper.Context context;
+  private Mapper.Context ctx;
 
   private Script map;
-  private Configuration configuration
+  private Configuration conf
 
-  @Override
   protected void setup(Mapper.Context ctx) {
-    this.context = ctx
-    this.configuration = ctx.configuration
-    ScriptCompiler compiler = new ScriptCompiler(configuration)
-    String scriptText = configuration[ScriptKeys.MAPSCRIPT];
-    map = compiler.parseScriptOperation(scriptText, this, ctx)
-
+    this.ctx = ctx
+    this.conf = ctx.configuration
+    ScriptCompiler comp = new ScriptCompiler(conf)
+    String scriptText = conf['mapscript']
+    map = comp.parse(scriptText, this, ctx)
   }
 
-  @Override
-  protected void map(Writable key, Writable value, Mapper.Context context) {
-    map.setProperty('key',key)
-    map.setProperty('value',value)
+  protected void map(Writable key, Writable value, Mapper.Context ctx) {
+    map.setProperty(ScriptOperation.KEY, key)
+    map.setProperty(ScriptOperation.VALUE, value)
+    map.setProperty(ScriptOperation.CONTEXT, ctx)
+
     map.run()
   }
 

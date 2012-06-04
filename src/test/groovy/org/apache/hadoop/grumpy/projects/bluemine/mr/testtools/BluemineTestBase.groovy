@@ -132,18 +132,25 @@ class BluemineTestBase extends GrumpyHadoopTestBase implements BluemineOptions {
    * @return the output directory after the run
    */
   File runCountJob(Map options, String name, Class mapper) {
+    runCountJob(options, name, mapper, null)
+  }
+  
+  File runCountJob(Map options, String name, Class mapper, List optionList) {
     GrumpyJob job
     File outDir
     (job, outDir) = createMRJob(options,
                                 name,
                                 mapper,
                                 CountReducer)
+    job.applyOptionList(optionList)
     job.mapOutputValueClass = IntWritable
     job.outputFormatClass = NewAPIExtTextOutputFormat
     runJob(job)
     dumpDir(LOG, outDir)
     outDir
   }
+  
+  
 
   protected void makeMapEmitEvents(BluemineJob job) {
     job.makeMapEmitEvents()

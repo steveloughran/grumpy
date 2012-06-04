@@ -35,14 +35,15 @@ class ScriptedReducer extends Reducer {
     this.configuration = ctx.configuration
     ScriptCompiler compiler = new ScriptCompiler(configuration)
     String scriptText = configuration[ScriptKeys.REDSCRIPT];
-    map = compiler.parseScriptOperation(scriptText, this, ctx)
+    map = compiler.parse(scriptText, this, ctx)
 
   }
 
   @Override
   protected void reduce(Object key, Iterable values, Reducer.Context context) {
-    map.setProperty('key', key)
-    map.setProperty('values', values)
+    map.setProperty(ScriptOperation.KEY, key)
+    map.setProperty(ScriptOperation.VALUE, values)
+    map.setProperty(ScriptOperation.CONTEXT, context)
     map.run()
   }
 }
