@@ -60,8 +60,7 @@ emit(k, new IntWritable(1))
   void testScriptedReduce() {
     GrumpyJob job
     File outDir
-    (job, outDir) = createMRJob([:],
-                                "mapScript",
+    (job, outDir) = createMRJob("mapScript",
                                 ScriptedMapper,
                                 reduceScript)
     job.applyOptionList([[ScriptKeys.MAPSCRIPT,mapScript]])
