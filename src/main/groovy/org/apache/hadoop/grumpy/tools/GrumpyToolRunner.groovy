@@ -29,57 +29,7 @@ import org.apache.hadoop.grumpy.ExitCodeException
 
 @Commons
 class GrumpyToolRunner {
-/**
- * Take a configuration and sort it
- * @param conf config to process
- * @return a set of all the keys, whose iterator will be in
- * natural sorted order
- */
-/**
- * Probe a port for being open
- *
- * @param address        address to check
- * @param connectTimeout timeout in milliseconds
- * @throws IOException failure to connect, including timeout
- */
-/**
- * Probe a port for being open
- *
- * @param hostname hostname to check
- * @param port port to probe
- * @param connectTimeout timeout in milliseconds
- * @throws IOException failure to connect, including timeout
- */
-/**
- * Find a jar that contains a class of the same name, if any.
- * It will return a jar file, even if that is not the first thing
- * on the class path that has a class with the same name.
- *
- *
- * This is from Hadoop 0.24 and contains the fix for incomplete uuencode plus some 
- * extra error handling
- * @param my_class the class to find.
- * @return a jar file that contains the class, or null.
- * @throws IOException
- */
-/**
- * Join a list of anything together into a string, using the defined separator (Which is not appended to the last element)
- * @param elements list elements
- * @param separator string separator
- * @return a combined list
- */
-/**
- * Clean up the output directory
- * @param dir
- * @return
- */
-/**
- * Dump a dir to the log, and add up the total size of all files matching the pattern
- * @param dumpLog
- * @param dir
- * @param pattern to look for when counting
- * @return number of files if
- */
+
 
   private static final int HELP_WIDTH = 80
 

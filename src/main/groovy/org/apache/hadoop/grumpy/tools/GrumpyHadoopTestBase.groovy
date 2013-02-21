@@ -16,8 +16,6 @@ import org.apache.hadoop.mapred.MiniMRCluster
 abstract class GrumpyHadoopTestBase extends GroovyTestCase
 implements Closeable {
   protected static Log LOG = LogFactory.getLog(this);
-  final static String TEST_DATA_DIR = "test.build.data"
-  final static String HADOOP_LOG_DIR = "hadoop.log.dir"
 
   /**
    * Test property used to define the input directory of data:

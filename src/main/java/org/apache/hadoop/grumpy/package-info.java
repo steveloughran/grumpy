@@ -1,5 +1,3 @@
-
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,15 +16,8 @@
  * limitations under the License.
  */
 
-package org.apache.hadoop.grumpy.projects.bluemine.mr.test
+package org.apache.hadoop.grumpy;
 
-import org.apache.hadoop.grumpy.projects.bluemine.mr.MapToDayOfWeek
-import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
-
-class DayCountTest extends BluemineTestBase {
-
-  void testHourCount() {
-    runCountJob("daycount", MapToDayOfWeek)
-  }
-
-}
+/**
+ Grumpy Groovy/Hadoop integration
+ */
