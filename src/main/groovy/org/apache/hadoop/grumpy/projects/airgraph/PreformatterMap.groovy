@@ -22,9 +22,9 @@
 
 package org.apache.hadoop.grumpy.projects.airgraph
 
+import org.apache.hadoop.io.IntWritable
 import org.apache.hadoop.io.LongWritable
 import org.apache.hadoop.io.Text
-import org.apache.hadoop.io.IntWritable
 import org.apache.hadoop.mapreduce.Mapper
 
 class PreformatterMap extends Mapper<LongWritable, Text, IntWritable, IntWritable> {

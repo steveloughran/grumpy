@@ -2,10 +2,10 @@ package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
 import groovy.util.logging.Commons
 import org.apache.hadoop.grumpy.ExitCodeException
+import org.apache.hadoop.grumpy.output.ExtensionOptions
 import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
 import org.apache.hadoop.grumpy.projects.bluemine.mr.FilterDeviceByYear
-import org.apache.hadoop.grumpy.output.ExtensionOptions
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapred.JobConf

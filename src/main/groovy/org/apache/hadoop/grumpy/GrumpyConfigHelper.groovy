@@ -1,6 +1,5 @@
 package org.apache.hadoop.grumpy
 
-import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.conf.Configuration
 
 /**

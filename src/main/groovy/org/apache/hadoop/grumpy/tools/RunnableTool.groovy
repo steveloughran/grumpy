@@ -19,8 +19,8 @@
 
 package org.apache.hadoop.grumpy.tools
 
-import org.apache.commons.cli.Options
 import org.apache.commons.cli.CommandLine
+import org.apache.commons.cli.Options
 import org.apache.hadoop.conf.Configurable
 
 interface RunnableTool extends Configurable {

@@ -2,9 +2,9 @@ package org.apache.hadoop.grumpy.tools
 
 import groovy.util.logging.Commons
 import org.apache.commons.logging.Log
-import org.apache.hadoop.net.NetUtils
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.grumpy.ExitCodeException
+import org.apache.hadoop.net.NetUtils
 
 /**
  * Utility methods primarily used in setting up and executing tools

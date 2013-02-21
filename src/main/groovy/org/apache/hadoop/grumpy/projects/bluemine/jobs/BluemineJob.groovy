@@ -5,11 +5,9 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.grumpy.GrumpyJob
 import org.apache.hadoop.grumpy.Keys
 import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
-
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
 import org.apache.hadoop.io.Text
 import org.apache.hadoop.mapred.JobConf
-
-import org.apache.hadoop.grumpy.tools.GrumpyUtils
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

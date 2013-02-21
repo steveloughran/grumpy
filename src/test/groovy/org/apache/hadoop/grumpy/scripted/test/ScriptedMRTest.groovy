@@ -17,14 +17,12 @@
 
 package org.apache.hadoop.grumpy.scripted.test
 
-import org.apache.hadoop.grumpy.projects.bluemine.mr.MapToHour
-import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
-import org.apache.hadoop.grumpy.scripted.ScriptedMapper
-import org.apache.hadoop.grumpy.scripted.ScriptKeys
-import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
-import org.apache.hadoop.io.IntWritable
-import org.apache.hadoop.grumpy.projects.bluemine.reducers.CountReducer
 import org.apache.hadoop.grumpy.GrumpyJob
+import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
+import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
+import org.apache.hadoop.grumpy.scripted.ScriptKeys
+import org.apache.hadoop.grumpy.scripted.ScriptedMapper
+import org.apache.hadoop.io.IntWritable
 
 class ScriptedMRTest extends BluemineTestBase {
 

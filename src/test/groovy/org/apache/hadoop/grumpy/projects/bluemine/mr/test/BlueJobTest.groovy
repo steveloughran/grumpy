@@ -1,12 +1,11 @@
 package org.apache.hadoop.grumpy.projects.bluemine.mr.test
 
+import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
 import org.apache.hadoop.grumpy.projects.bluemine.jobs.BluemineJob
 import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
-
 import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.mapreduce.OutputFormat
 import org.junit.Test
-import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

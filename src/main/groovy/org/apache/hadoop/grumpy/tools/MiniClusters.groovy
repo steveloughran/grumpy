@@ -1,12 +1,11 @@
 package org.apache.hadoop.grumpy.tools
 
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.grumpy.Keys
+import org.apache.hadoop.hdfs.MiniDFSCluster
+import org.apache.hadoop.hdfs.server.common.HdfsConstants
 import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.mapred.MiniMRCluster
-import org.apache.hadoop.hdfs.MiniDFSCluster
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.hdfs.server.common.HdfsConstants
-
-import org.apache.hadoop.grumpy.Keys
 
 class MiniClusters {
 

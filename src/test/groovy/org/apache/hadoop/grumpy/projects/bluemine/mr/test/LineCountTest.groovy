@@ -1,10 +1,9 @@
 package org.apache.hadoop.grumpy.projects.bluemine.mr.test
 
 import org.apache.hadoop.grumpy.GrumpyJob
-
+import org.apache.hadoop.grumpy.projects.bluemine.mr.LineCountMapper
 import org.apache.hadoop.grumpy.projects.bluemine.mr.testtools.BluemineTestBase
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.GroovyValueCountReducer
-import org.apache.hadoop.grumpy.projects.bluemine.mr.LineCountMapper
 
 /**
  *

@@ -19,8 +19,8 @@
 
 package org.apache.hadoop.grumpy.tools
 
-import org.apache.hadoop.conf.Configuration
 import org.apache.commons.cli.Options
+import org.apache.hadoop.conf.Configuration
 
 abstract class AbstractRunnableTool implements RunnableTool {
   

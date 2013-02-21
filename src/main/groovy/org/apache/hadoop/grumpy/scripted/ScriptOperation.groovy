@@ -19,7 +19,6 @@
 
 package org.apache.hadoop.grumpy.scripted
 
-import org.apache.hadoop.conf.Configuration
 import groovy.util.logging.Commons
 
 /**

@@ -19,9 +19,9 @@
 package org.apache.hadoop.grumpy.scripted
 
 import groovy.util.logging.Commons
+import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.conf.Configured
 import org.codehaus.groovy.control.CompilerConfiguration
-import org.apache.hadoop.conf.Configuration
 
 /**
  * This is the script compiler. It must be set 

@@ -5,10 +5,9 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.FileUtil
 import org.apache.hadoop.grumpy.ExitCodeException
 import org.apache.hadoop.grumpy.projects.bluemine.BluemineOptions
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
 import org.apache.hadoop.grumpy.tools.JobKiller
 import org.apache.hadoop.mapred.JobConf
-
-import org.apache.hadoop.grumpy.tools.GrumpyUtils
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one

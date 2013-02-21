@@ -19,9 +19,9 @@
 
 package org.apache.hadoop.grumpy.scripted
 
+import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.io.Writable
 import org.apache.hadoop.mapreduce.Mapper
-import org.apache.hadoop.conf.Configuration
 
 class ScriptedMapper extends Mapper<Writable, Writable, Writable, Writable> {
 

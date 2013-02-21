@@ -19,14 +19,13 @@
 
 package org.apache.hadoop.grumpy.scripted.oldapi
 
+import org.apache.hadoop.grumpy.scripted.ScriptCompiler
+import org.apache.hadoop.grumpy.scripted.ScriptKeys
+import org.apache.hadoop.mapred.JobConf
+import org.apache.hadoop.mapred.MapReduceBase
 import org.apache.hadoop.mapred.Mapper
 import org.apache.hadoop.mapred.OutputCollector
 import org.apache.hadoop.mapred.Reporter
-
-import org.apache.hadoop.mapred.JobConf
-import org.apache.hadoop.mapred.MapReduceBase
-import org.apache.hadoop.grumpy.scripted.ScriptCompiler
-import org.apache.hadoop.grumpy.scripted.ScriptKeys
 
 class ScriptMapper extends MapReduceBase implements Mapper {
 

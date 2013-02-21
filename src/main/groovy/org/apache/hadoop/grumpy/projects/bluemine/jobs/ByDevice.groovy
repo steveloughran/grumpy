@@ -1,8 +1,8 @@
 package org.apache.hadoop.grumpy.projects.bluemine.jobs
 
 import groovy.util.logging.Commons
-import org.apache.hadoop.grumpy.projects.bluemine.mr.MapEmitDevice
 import org.apache.hadoop.grumpy.output.NewAPIExtTextOutputFormat
+import org.apache.hadoop.grumpy.projects.bluemine.mr.MapEmitDevice
 import org.apache.hadoop.grumpy.projects.bluemine.reducers.EventCSVEmitReducer
 import org.apache.hadoop.mapred.JobConf
 

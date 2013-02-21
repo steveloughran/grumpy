@@ -20,18 +20,16 @@ package org.apache.hadoop.grumpy
 import groovy.util.logging.Commons
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
-
+import org.apache.hadoop.grumpy.output.ExtensionOptions
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
+import org.apache.hadoop.grumpy.tools.JobKiller
 import org.apache.hadoop.io.SequenceFile
 import org.apache.hadoop.io.compress.GzipCodec
+import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.mapred.SequenceFileOutputFormat
 import org.apache.hadoop.mapreduce.Job
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat
-
-import org.apache.hadoop.grumpy.tools.GrumpyUtils
-import org.apache.hadoop.grumpy.output.ExtensionOptions
-import org.apache.hadoop.mapred.JobConf
-import org.apache.hadoop.grumpy.tools.JobKiller
 
 /**
  * This class 
