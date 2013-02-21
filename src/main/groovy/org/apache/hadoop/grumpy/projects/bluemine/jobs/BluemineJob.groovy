@@ -1,15 +1,4 @@
-package org.apache.hadoop.grumpy.projects.bluemine.jobs
-
-import groovy.util.logging.Commons
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.grumpy.GrumpyJob
-import org.apache.hadoop.grumpy.Keys
-import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
-import org.apache.hadoop.grumpy.tools.GrumpyUtils
-import org.apache.hadoop.io.Text
-import org.apache.hadoop.mapred.JobConf
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -26,6 +15,18 @@ import org.apache.hadoop.mapred.JobConf
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.hadoop.grumpy.projects.bluemine.jobs
+
+import groovy.util.logging.Commons
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.grumpy.GrumpyJob
+import org.apache.hadoop.grumpy.Keys
+import org.apache.hadoop.grumpy.projects.bluemine.events.BlueEvent
+import org.apache.hadoop.grumpy.tools.GrumpyUtils
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.mapred.JobConf
+
 @Commons
 class BluemineJob extends GrumpyJob {
 

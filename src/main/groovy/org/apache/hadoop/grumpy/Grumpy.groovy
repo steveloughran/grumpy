@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Job
 
 /**
  * This contains the init logic that sets up various Hadoop classes to be
- * a bit more groovy. You must instantiate a GrumpyInit class to force injection
+ * a bit more groovy. You must instantiate a Grumpy class to force injection
  * into the system.
  */
 @Commons

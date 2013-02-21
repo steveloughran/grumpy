@@ -1,11 +1,4 @@
-package org.apache.hadoop.grumpy.output
-
-import groovy.util.logging.Commons
-import org.apache.hadoop.fs.FileSystem
-import org.apache.hadoop.mapred.JobConf
-import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -22,6 +15,13 @@ import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.hadoop.grumpy.output
+
+import groovy.util.logging.Commons
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.mapred.JobConf
+import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat
 
 /**
  * This class only works on the

@@ -1,18 +1,4 @@
-package org.apache.hadoop.grumpy.output
-
-import groovy.util.logging.Commons
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.FSDataOutputStream
-import org.apache.hadoop.fs.FileSystem
-import org.apache.hadoop.fs.Path
-import org.apache.hadoop.io.compress.CompressionCodec
-import org.apache.hadoop.io.compress.GzipCodec
-import org.apache.hadoop.mapreduce.RecordWriter
-import org.apache.hadoop.mapreduce.TaskAttemptContext
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
-import org.apache.hadoop.util.ReflectionUtils
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -29,6 +15,20 @@ import org.apache.hadoop.util.ReflectionUtils
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.hadoop.grumpy.output
+
+import groovy.util.logging.Commons
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FSDataOutputStream
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.fs.Path
+import org.apache.hadoop.io.compress.CompressionCodec
+import org.apache.hadoop.io.compress.GzipCodec
+import org.apache.hadoop.mapreduce.RecordWriter
+import org.apache.hadoop.mapreduce.TaskAttemptContext
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
+import org.apache.hadoop.util.ReflectionUtils
 
 /**
  * This is a New API  output formatter. Mostly a copy and paste from the ASF original, with some
